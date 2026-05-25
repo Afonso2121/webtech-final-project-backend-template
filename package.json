@@ -1,0 +1,32 @@
+{
+  "name": "webtech-final-project-backend-template",
+  "version": "0.0.0",
+  "scripts": {
+    "prepare": "git rev-parse --git-dir > /dev/null 2>&1 && git config core.hooksPath .githooks || true",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "eslint src/",
+    "syntax": "node --check src/server.js && node --check src/app.js",
+    "validate": "node scripts/validate-project.js",
+    "grade": "node scripts/validate-project.js --grade",
+    "grade:mini": "node scripts/grade-mini.js",
+    "grade:test": "node scripts/grade-test.js",
+    "grade:cleanup": "node scripts/grade-cleanup.js",
+    "test:validate": "node scripts/test-validate.js",
+    "quality": "npm run validate && npm run lint && npm run syntax"
+  },
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "eslint": "^9.18.0",
+    "globals": "^15.15.0",
+    "nodemon": "^3.1.9"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules/
+.env
+*.log
+grade-report*.html
+dist/
