@@ -1,6 +1,8 @@
 const { Router } = require("express");
-const authRoutes = require("./auth.routes"); 
+const authRoutes = require("./auth.routes");
 const reviewRoutes = require("./review.routes"); // 1. Importar as tuas rotas de reviews
+const favoriteRoutes = require("./favorite.routes"); // 1. Importar as tuas rotas de favoritos
+const watchlistRoutes = require("./watchlist.routes"); // 1. Importar as tuas rotas de watchlist
 
 const router = Router();
 
@@ -10,10 +12,18 @@ router.get("/", (_req, res) => {
 });
 
 // Usar as rotas de autenticação
-router.use("/auth", authRoutes); 
+router.use("/auth", authRoutes);
 
 // 2. Dizer à aplicação para usar as rotas de reviews
 // O frontend vai aceder através de: /api/reviews
-router.use("/reviews", reviewRoutes); 
+router.use("/reviews", reviewRoutes);
+
+// 2. Dizer à aplicação para usar as rotas de favoritos
+// O frontend vai aceder através de: /api/favorites
+router.use("/favorites", favoriteRoutes);
+
+// 2. Dizer à aplicação para usar as rotas de watchlist
+// O frontend vai aceder através de: /api/watchlist
+router.use("/watchlist", watchlistRoutes);
 
 module.exports = router;
