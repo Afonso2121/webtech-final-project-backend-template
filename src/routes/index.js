@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const authRoutes = require("./auth.routes"); 
-const reviewRoutes = require("./review.routes"); //  1. Importar as tuas rotas de reviews
+const reviewRoutes = require("./review.routes"); // 1. Importar as tuas rotas de reviews
 
 const router = Router();
 
