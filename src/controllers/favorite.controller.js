@@ -20,4 +20,17 @@ const addFavorite = (req, res) => {
         const favorites = FavoriteModel.getByUserId(userId);
         return res.status(200).json(favorites);
     };
+    const removeFavorite = (req, res) => {
+        const { id } = req.params;
+
+        const deleted = FavoriteModel.delete(id);
+
+        if (!deleted) {
+            return res.status(404).json({ error: 'Favorito não encontrado.' });
+        }
+
+        return res.status(200).json({ message: 'Favorito removido com sucesso.', deletedFavorite: deleted });
+    };
+
+    module.exports = { addFavorite, getFavorites, removeFavorite };
 };
