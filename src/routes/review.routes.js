@@ -5,4 +5,7 @@ const reviewController = require('../controllers/review.controller');
 // Mapeia o método POST para a função do controlador
 router.post('/', reviewController.createReview);
 
+// PUT para atualizar
+router.put('/:id', reviewController.updateReview);
+
 module.exports = router;
