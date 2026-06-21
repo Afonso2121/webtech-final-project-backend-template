@@ -6,42 +6,10 @@ const router = express.Router();
 
 // Função que cria o "bilhete" de entrada do utilizador
 const generateToken = (id) => {
-  // Usa a frase secreta que colocaste no .env para trancar o token
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d", // O login dura 30 dias
   });
 };
-
-/**
- * @swagger
- * /api/auth/register:
- *   post:
- *     summary: Regista um novo utilizador na aplicação
- *     tags: [Autenticação]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - email
- *               - password
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Ulysse Cancela"
- *               email:
- *                 type: string
- *                 example: "ulysse@ipvc.pt"
- *               password:
- *                 type: string
- *                 example: "123456"
- *     responses:
- *       201:
- *         description: Conta criada com sucesso!
- */
 
 // ----------------------------------------------------
 // ROTA 1: REGISTAR UM NOVO UTILIZADOR (POST /api/auth/register)
@@ -71,7 +39,7 @@ router.post("/register", async (req, res, next) => {
       token: generateToken(user._id),
     });
   } catch (error) {
-    next(error); // Se algo correr mal, envia para o errorHandler
+    next(error);
   }
 });
 
