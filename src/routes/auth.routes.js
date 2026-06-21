@@ -1,69 +1,46 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-
 const router = express.Router();
 
-// Função que cria o "bilhete" de entrada do utilizador
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d", // O login dura 30 dias
-  });
-};
-
-// ----------------------------------------------------
-// ROTA 1: REGISTAR UM NOVO UTILIZADOR (POST /api/auth/register)
-// ----------------------------------------------------
-router.post("/register", async (req, res, next) => {
+// ROTA 1: CRIAR UMA REVIEW (POST /api/reviews)
+router.post("/", async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { movieId, movieTitle, rating, comment, userId } = req.body;
 
-    // 1. Verifica se o email já existe na Base de Dados
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ error: "Este email já está registado" });
-    }
-
-    // 2. Cria o utilizador na Base de Dados
-    const user = await User.create({
-      name,
-      email,
-      password,
-    });
-
-    // 3. Devolve a resposta ao Angular com o Token
+    console.log(`🎬 Nova review recebida para o filme: ${movieTitle}`);
+    console.log(`✍️ Comentário: "${comment}" | Nota: ${rating}/5`);
+    
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
+      message: "Review criada com sucesso no backend!",
+      data: { movieId, movieTitle, rating, comment }
     });
   } catch (error) {
     next(error);
   }
 });
 
-// ----------------------------------------------------
-// ROTA 2: FAZER LOGIN (POST /api/auth/login)
-// ----------------------------------------------------
-router.post("/login", async (req, res, next) => {
+// ROTA 2: EDITAR UMA REVIEW (PUT /api/reviews/:id)
+router.put("/:id", async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { id } = req.params;
+    const { rating, comment } = req.body;
 
-    // 1. Procura o utilizador pelo email
-    const user = await User.findOne({ email });
+    res.json({
+      message: "Review atualizada com sucesso!",
+      data: { id, rating, comment }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
-    // 2. Se o utilizador existir, verifica se a password bate certo
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
-      });
-    } else {
-      res.status(401).json({ error: "Email ou password incorretos" });
-    }
+// ROTA 3: REMOVER UMA REVIEW (DELETE /api/reviews/:id)
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    res.json({
+      message: "Review removida com sucesso!"
+    });
   } catch (error) {
     next(error);
   }
