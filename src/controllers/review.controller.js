@@ -13,29 +13,44 @@ const createReview = (req, res) => {
   return res.status(201).json(newReview);
 };
 
-// Atualizar uma Nota Existente
+// Atualizar uma nota
 const updateReview = (req, res) => {
-  const { id } = req.params; // Apanha o ID da review que vem na rota (ex: /api/reviews/1)
-  const { rating, comment } = req.body; // Recebe a nova nota ou novo comentário
+  const { id } = req.params;
+  const { rating, comment } = req.body;
 
-  // Se o utilizador estiver a alterar a nota, valida se está entre 1 e 5
   if (rating !== undefined && (rating < 1 || rating > 5)) {
     return res.status(400).json({ error: 'A nota (rating) deve ser entre 1 e 5.' });
   }
 
-  // Atualiza no nosso modelo em memória
   const updatedReview = ReviewModel.update(id, { rating, comment });
 
-  // Se não encontrar nenhuma review com esse ID, dá erro 404
   if (!updatedReview) {
     return res.status(404).json({ error: 'Review não encontrada.' });
   }
 
-  // Devolve a review atualizada com sucesso
   return res.status(200).json(updatedReview);
+};
+
+//  Remover uma Nota Existente
+const deleteReview = (req, res) => {
+  const { id } = req.params; // Apanha o ID da review na URL
+
+  const deletedReview = ReviewModel.delete(id);
+
+  // Se a review não existir na nossa memória, dá erro 404
+  if (!deletedReview) {
+    return res.status(404).json({ error: 'Review não encontrada para remover.' });
+  }
+
+  // Retorna uma mensagem de sucesso e a review que foi apagada
+  return res.status(200).json({ 
+    message: 'Review removida com sucesso.', 
+    deletedReview 
+  });
 };
 
 module.exports = {
   createReview,
-  updateReview // Exporta a nova função
+  updateReview,
+  deleteReview //  Exporta a nova função de remoção
 };

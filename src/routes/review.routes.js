@@ -8,4 +8,7 @@ router.post('/', reviewController.createReview);
 // PUT para atualizar
 router.put('/:id', reviewController.updateReview);
 
+// DELETE para remover 
+router.delete('/:id', reviewController.deleteReview);
+
 module.exports = router;
