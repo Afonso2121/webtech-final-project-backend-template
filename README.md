@@ -96,11 +96,19 @@ src/
     └── errorHandler.js ← global error handler
 ```
 
-## Project-specific sections to complete
 
-- Fill in [PROJECT_INFO.md](PROJECT_INFO.md) with your group and project details.
-- Add any project notes in this README below.
+### CineTrack - Backend API 
+API RESTful desenvolvida para a plataforma de gestão de filmes e reviews.
 
-### Project Notes
+** Equipa:**
+* Ulysse (Membro 1: Base de Dados e Autenticação)
+* Ana Matos (Membro 2: Sistema de Favoritos)
+* Eric (Membro 3: Reviews e Notas)
 
-Add your project-specific notes here.
+** Tecnologias Adicionadas ao Template:**
+* **Base de Dados:** MongoDB com Mongoose
+* **Segurança:** JWT (JSON Web Tokens) e bcryptjs para gestão de utilizadores
+
+** Testar a API:**
+Com o servidor a correr (`npm run dev`), a documentação interativa e o teste das rotas de autenticação podem ser feitos através do Swagger em:
+ **http://localhost:3000/api-docs**
