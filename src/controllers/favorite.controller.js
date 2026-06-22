@@ -1,36 +1,52 @@
-const FavoriteModel = require('../models/favorite.model');
+const Favorite = require('../models/favorite.model');
 
-const addFavorite = (req, res) => {
-    const userId = req.user._id.toString();
-    const { movieId, movieTitle, moviePoster } = req.body;
+// POST /api/favorites
+const addFavorite = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { movieId, movieTitle, moviePoster } = req.body;
 
-    if (!movieId || !movieTitle) {
-        return res.status(400).json({ error: 'Os campos movieId e movieTitle são obrigatórios.' });
+        if (!movieId || !movieTitle) {
+            return res.status(400).json({ error: 'Os campos movieId e movieTitle são obrigatórios.' });
+        }
+
+        const existing = await Favorite.findOne({ userId, movieId });
+        if (existing) {
+            return res.status(409).json({ error: 'Este filme já está nos favoritos.' });
+        }
+
+        const newFavorite = await Favorite.create({ userId, movieId, movieTitle, moviePoster });
+        return res.status(201).json(newFavorite);
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao adicionar favorito.' });
     }
+};
 
-    const existing = FavoriteModel.findByUserAndMovie(userId, movieId);
-    if (existing) {
-        return res.status(409).json({ error: 'Este filme já está nos favoritos.' });
-    }
-
-    const newFavorite = FavoriteModel.create({ userId, movieId, movieTitle, moviePoster });
-    return res.status(201).json(newFavorite);
-    const getFavorites = (req, res) => {
-        const userId = req.user._id.toString();
-        const favorites = FavoriteModel.getByUserId(userId);
+// GET /api/favorites
+const getFavorites = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const favorites = await Favorite.find({ userId }).sort({ createdAt: -1 });
         return res.status(200).json(favorites);
-    };
-    const removeFavorite = (req, res) => {
-        const { id } = req.params;
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao obter favoritos.' });
+    }
+};
 
-        const deleted = FavoriteModel.delete(id);
+// DELETE /api/favorites/:id
+const removeFavorite = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleted = await Favorite.findByIdAndDelete(id);
 
         if (!deleted) {
             return res.status(404).json({ error: 'Favorito não encontrado.' });
         }
 
-        return res.status(200).json({ message: 'Favorito removido com sucesso.', deletedFavorite: deleted });
-    };
-
-    module.exports = { addFavorite, getFavorites, removeFavorite };
+        return res.status(200).json({ message: 'Favorito removido com sucesso.' });
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao remover favorito.' });
+    }
 };
+
+module.exports = { addFavorite, getFavorites, removeFavorite };
