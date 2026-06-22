@@ -14,7 +14,7 @@ CineTrack - Plataforma web para pesquisa de filmes, gestão de coleções de fil
 * **Requires API key?** Yes
 
 ## Frontend Repository
-* **Link:** [Inserir aqui o link do GitHub onde a Ana tem o projeto Angular]
+* **Link:** https://github.com/anapmatos05/webtech-final-project-frontend-template.git
 
 ## Entities
 Na nossa Base de Dados (MongoDB) temos as seguintes entidades:
